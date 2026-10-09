@@ -32,13 +32,14 @@ export default function SalesFinance() {
   }));
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-6">
+    <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h1 className="text-2xl font-bold text-dark-100 flex items-center gap-2">
+        <h1 className="text-xl sm:text-2xl font-bold text-dark-100 flex items-center gap-2">
           <DollarSign className="w-6 h-6 text-emerald-500" />
           Vendas e Financeiro
         </h1>
-        <Select value={period} onChange={(e) => setPeriod(e.target.value)} className="w-48">
+        <Select value={period} onChange={(e) => setPeriod(e.target.value)} className="w-full sm:w-48">
+
           <option value="this_month">Este Mês</option>
           <option value="last_3_months">Últimos 3 Meses</option>
           <option value="this_year">Este Ano</option>

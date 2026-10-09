@@ -131,12 +131,13 @@ export default function Proposals() {
   if (error) return <div className="p-8 text-red-500">Erro ao carregar propostas</div>;
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-6">
+    <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h1 className="text-2xl font-bold text-dark-100 flex items-center gap-2">
+        <h1 className="text-xl sm:text-2xl font-bold text-dark-100 flex items-center gap-2">
           <FileText className="w-6 h-6 text-cortex-500" />
           Propostas
         </h1>
+
         <div className="flex items-center gap-3 w-full sm:w-auto">
           <div className="relative flex-1 sm:w-64">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-dark-400" />

@@ -6,6 +6,7 @@ import { Header } from './Header';
 export const MainLayout: React.FC = () => {
   const location = useLocation();
   const [pageTitle, setPageTitle] = useState('Visão Geral');
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   useEffect(() => {
     // Map routes to titles
@@ -22,14 +23,22 @@ export const MainLayout: React.FC = () => {
     };
 
     setPageTitle(titles[location.pathname] || 'Cortex CRM');
+    // Close mobile sidebar on route change
+    setMobileSidebarOpen(false);
   }, [location]);
 
   return (
     <div className="flex min-h-screen bg-dark-950 text-dark-100 font-sans selection:bg-cortex-500/30">
-      <Sidebar />
+      <Sidebar 
+        mobileOpen={mobileSidebarOpen} 
+        onCloseMobile={() => setMobileSidebarOpen(false)} 
+      />
       <div className="flex-1 flex flex-col min-w-0">
-        <Header title={pageTitle} />
-        <main className="flex-1 overflow-x-hidden overflow-y-auto p-6">
+        <Header 
+          title={pageTitle} 
+          onOpenMobileMenu={() => setMobileSidebarOpen(true)} 
+        />
+        <main className="flex-1 overflow-x-hidden overflow-y-auto p-4 sm:p-6">
           <div className="mx-auto max-w-7xl">
             <Outlet />
           </div>
@@ -38,3 +47,4 @@ export const MainLayout: React.FC = () => {
     </div>
   );
 };
+

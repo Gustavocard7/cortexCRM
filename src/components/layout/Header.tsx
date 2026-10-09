@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { LogOut, User as UserIcon } from 'lucide-react';
+import { LogOut, User as UserIcon, Menu } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { getInitials } from '@/lib/utils';
 import { cn } from '@/lib/utils';
@@ -7,9 +7,10 @@ import { cn } from '@/lib/utils';
 interface HeaderProps {
   title: string;
   subtitle?: string;
+  onOpenMobileMenu?: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ title, subtitle }) => {
+export const Header: React.FC<HeaderProps> = ({ title, subtitle, onOpenMobileMenu }) => {
   const { profile, signOut } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -39,11 +40,24 @@ export const Header: React.FC<HeaderProps> = ({ title, subtitle }) => {
   };
 
   return (
-    <header className="h-16 bg-dark-900/80 backdrop-blur-sm border-b border-dark-700 flex items-center justify-between px-6 sticky top-0 z-10">
-      <div className="flex flex-col">
-        <h1 className="text-lg font-semibold text-dark-100">{title}</h1>
-        {subtitle && <span className="text-xs text-dark-400">{subtitle}</span>}
+    <header className="h-16 bg-dark-900/80 backdrop-blur-sm border-b border-dark-700 flex items-center justify-between px-4 sm:px-6 sticky top-0 z-10 shrink-0">
+      <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+        {onOpenMobileMenu && (
+          <button
+            type="button"
+            onClick={onOpenMobileMenu}
+            className="p-2 -ml-1 rounded-lg text-dark-300 hover:text-dark-100 hover:bg-dark-800 transition-colors md:hidden focus:outline-none"
+            aria-label="Abrir menu"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+        )}
+        <div className="flex flex-col min-w-0">
+          <h1 className="text-base sm:text-lg font-semibold text-dark-100 truncate">{title}</h1>
+          {subtitle && <span className="text-xs text-dark-400 truncate">{subtitle}</span>}
+        </div>
       </div>
+
 
       <div className="relative" ref={dropdownRef}>
         <button 

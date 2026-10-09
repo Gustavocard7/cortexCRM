@@ -225,18 +225,18 @@ export default function Settings() {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-6">
-      <h1 className="text-2xl font-bold text-dark-100 flex items-center gap-2">
+    <div className="space-y-6">
+      <h1 className="text-xl sm:text-2xl font-bold text-dark-100 flex items-center gap-2">
         <SettingsIcon className="w-6 h-6 text-cortex-500" />
         Configurações do Sistema
       </h1>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card className="p-2 md:col-span-1 h-fit space-y-1">
+        <Card className="p-2 md:col-span-1 h-fit flex overflow-x-auto md:flex-col gap-1 -mx-4 px-4 sm:mx-0 sm:px-2 pb-2 md:pb-2">
           <button
             onClick={() => setActiveTab('profile')}
             className={cn(
-              'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
+              'whitespace-nowrap shrink-0 md:w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'profile' ? 'bg-cortex-600/20 text-cortex-400 border border-cortex-500/30' : 'text-dark-300 hover:bg-dark-800'
             )}
           >
@@ -246,7 +246,7 @@ export default function Settings() {
           <button
             onClick={() => setActiveTab('stages')}
             className={cn(
-              'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
+              'whitespace-nowrap shrink-0 md:w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'stages' ? 'bg-cortex-600/20 text-cortex-400 border border-cortex-500/30' : 'text-dark-300 hover:bg-dark-800'
             )}
           >
@@ -256,7 +256,7 @@ export default function Settings() {
           <button
             onClick={() => setActiveTab('users')}
             className={cn(
-              'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
+              'whitespace-nowrap shrink-0 md:w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'users' ? 'bg-cortex-600/20 text-cortex-400 border border-cortex-500/30' : 'text-dark-300 hover:bg-dark-800'
             )}
           >
@@ -266,7 +266,7 @@ export default function Settings() {
           <button
             onClick={() => setActiveTab('general')}
             className={cn(
-              'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
+              'whitespace-nowrap shrink-0 md:w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'general' ? 'bg-cortex-600/20 text-cortex-400 border border-cortex-500/30' : 'text-dark-300 hover:bg-dark-800'
             )}
           >
@@ -276,6 +276,7 @@ export default function Settings() {
         </Card>
 
         <div className="md:col-span-3">
+
           <Card className="p-6">
             {activeTab === 'profile' && (
               <form onSubmit={saveProfile} className="space-y-6">

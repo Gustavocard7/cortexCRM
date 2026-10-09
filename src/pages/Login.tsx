@@ -98,7 +98,7 @@ export const Login: React.FC = () => {
           </p>
         </div>
 
-        <div className="glass-card p-8 rounded-2xl shadow-2xl border border-dark-700/60 backdrop-blur-xl">
+        <div className="glass-card p-5 sm:p-8 rounded-2xl shadow-2xl border border-dark-700/60 backdrop-blur-xl">
           {/* Acesso Rápido ADM Cortex */}
           <div className="mb-6 p-4 rounded-xl bg-cortex-600/10 border border-cortex-500/25 flex flex-col gap-2.5">
             <div className="flex items-center gap-2 text-cortex-300 font-medium text-xs uppercase tracking-wider">

@@ -12,11 +12,12 @@ export default function Dashboard() {
   if (error || !data) return <div className="p-8"><EmptyState title="Erro ao carregar" description="Não foi possível carregar os dados do dashboard." icon={AlertCircle} /></div>;
 
   return (
-    <div className="flex flex-col gap-6 p-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-dark-100">Visão Geral</h1>
-        <span className="text-sm text-dark-400">{new Date().toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}</span>
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <h1 className="text-xl sm:text-2xl font-bold text-dark-100">Visão Geral</h1>
+        <span className="text-xs sm:text-sm text-dark-400 capitalize">{new Date().toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}</span>
       </div>
+
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card className="stat-card p-4">

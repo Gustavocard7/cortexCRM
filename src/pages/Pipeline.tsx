@@ -52,7 +52,7 @@ function PipelineColumn({ stage, leads, onCardClick }: { stage: PipelineStage; l
   const totalValue = leads.reduce((sum, l) => sum + (l.estimated_value || 0), 0);
 
   return (
-    <div className="flex flex-col w-[320px] shrink-0 bg-dark-900/50 border border-dark-700 rounded-xl">
+    <div className="flex flex-col w-[280px] sm:w-[320px] shrink-0 snap-start bg-dark-900/50 border border-dark-700 rounded-xl">
       <div className="p-3 border-b border-dark-700 flex justify-between items-center" style={{ borderTop: `3px solid ${stage.color || '#f59e0b'}` }}>
         <h3 className="font-semibold text-dark-100 flex items-center gap-2">
           {stage.name}
@@ -64,7 +64,7 @@ function PipelineColumn({ stage, leads, onCardClick }: { stage: PipelineStage; l
         <SortableContext items={leads.map(l => l.id)} strategy={verticalListSortingStrategy}>
           {leads.map(lead => <PipelineCard key={lead.id} lead={lead} onClick={onCardClick} />)}
         </SortableContext>
-        {leads.length === 0 && <div className="h-full flex items-center justify-center text-dark-400 text-sm italic">Arraste leads para cá</div>}
+        {leads.length === 0 && <div className="h-full flex items-center justify-center text-dark-400 text-sm italic py-8">Arraste leads para cá</div>}
       </div>
     </div>
   );
@@ -100,23 +100,23 @@ export default function Pipeline() {
   };
 
   return (
-    <div className="flex flex-col h-full overflow-hidden p-6 gap-6">
-      <div className="flex items-center justify-between">
+    <div className="flex flex-col h-full gap-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-dark-100">Funil de Vendas</h1>
-          <p className="text-sm text-dark-400">Total no pipeline: <span className="font-semibold text-cortex-400">{formatCurrency(totalValue)}</span></p>
+          <h1 className="text-xl sm:text-2xl font-bold text-dark-100">Funil de Vendas</h1>
+          <p className="text-xs sm:text-sm text-dark-400">Total no pipeline: <span className="font-semibold text-cortex-400">{formatCurrency(totalValue)}</span></p>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="relative">
+        <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
+          <div className="relative flex-1 sm:w-64">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-dark-400" />
-            <Input className="pl-9 w-64" placeholder="Buscar no pipeline..." />
+            <Input className="pl-9 w-full" placeholder="Buscar no pipeline..." />
           </div>
-          <Button variant="secondary"><Filter className="h-4 w-4 mr-2" /> Filtros</Button>
+          <Button variant="secondary" className="shrink-0"><Filter className="h-4 w-4 sm:mr-2" /><span className="hidden sm:inline">Filtros</span></Button>
         </div>
       </div>
-      <div className="flex-1 overflow-x-auto pb-4">
+      <div className="flex-1 overflow-x-auto pb-4 -mx-4 px-4 sm:mx-0 sm:px-0">
         <DndContext sensors={sensors} collisionDetection={closestCorners} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-          <div className="flex gap-4 h-full items-start">
+          <div className="flex gap-4 h-full items-start snap-x snap-mandatory">
             {data.stages.sort((a: any, b: any) => a.order_position - b.order_position).map((stage: any) => (
               <PipelineColumn key={stage.id} stage={stage} leads={data.leads.filter((l: any) => l.stage_id === stage.id)} onCardClick={setSelectedLead} />
             ))}
@@ -124,6 +124,7 @@ export default function Pipeline() {
           <DragOverlay>{activeLead ? <PipelineCard lead={activeLead} onClick={() => {}} /> : null}</DragOverlay>
         </DndContext>
       </div>
+
       <Modal isOpen={!!selectedLead} onClose={() => setSelectedLead(null)} title="Detalhes do Lead">
         {selectedLead && (
           <div className="space-y-4">

@@ -15,11 +15,12 @@ export default function Demonstrations() {
   if (error) return <div className="p-8"><EmptyState title="Erro" description="Falha ao carregar demonstrações." icon={AlertCircle} /></div>;
 
   return (
-    <div className="flex flex-col gap-6 p-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-dark-100">Demonstrações</h1>
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <h1 className="text-xl sm:text-2xl font-bold text-dark-100">Demonstrações</h1>
         <Button variant="primary" onClick={() => setModalOpen(true)}><Plus className="w-4 h-4 mr-2" /> Nova Demonstração</Button>
       </div>
+
 
       <Tabs 
         tabs={[

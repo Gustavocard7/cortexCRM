@@ -28,12 +28,17 @@ export const MainLayout: React.FC = () => {
   }, [location]);
 
   return (
-    <div className="flex min-h-screen bg-dark-950 text-dark-100 font-sans selection:bg-cortex-500/30">
+    <div className="relative flex min-h-screen bg-dark-950 text-dark-100 font-sans selection:bg-cortex-500/30 overflow-hidden">
+      {/* Futuristic Cyber Grid & Ambient Glow Orbs */}
+      <div className="fixed inset-0 pointer-events-none bg-cyber-grid z-0 opacity-60" />
+      <div className="fixed -top-40 left-1/4 w-[650px] h-[450px] bg-cortex-600/10 blur-[140px] rounded-full pointer-events-none z-0" />
+      <div className="fixed -bottom-40 right-10 w-[550px] h-[450px] bg-purple-600/10 blur-[150px] rounded-full pointer-events-none z-0" />
+
       <Sidebar 
         mobileOpen={mobileSidebarOpen} 
         onCloseMobile={() => setMobileSidebarOpen(false)} 
       />
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="relative z-10 flex-1 flex flex-col min-w-0">
         <Header 
           title={pageTitle} 
           onOpenMobileMenu={() => setMobileSidebarOpen(true)} 
@@ -46,5 +51,6 @@ export const MainLayout: React.FC = () => {
       </div>
     </div>
   );
+
 };
 

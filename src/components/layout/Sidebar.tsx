@@ -48,17 +48,18 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen = false, onCloseMob
 
   const navContent = (isMobile: boolean) => (
     <>
-      <div className="flex items-center h-16 px-4 border-b border-dark-700 justify-between">
+      <div className="flex items-center h-16 px-4 border-b border-dark-700/80 justify-between bg-dark-900/60">
         <div className="flex items-center overflow-hidden whitespace-nowrap">
-          <Brain className="text-cortex-500 w-8 h-8 shrink-0" />
+          <Brain className="text-cortex-400 w-8 h-8 shrink-0 drop-shadow-[0_0_12px_rgba(99,102,241,0.7)] animate-pulse-slow" />
           <div className={cn(
             "ml-3 transition-opacity duration-300",
-            (!isMobile && collapsed) ? "opacity-0 w-0" : "opacity-100 flex items-center gap-1.5"
+            (!isMobile && collapsed) ? "opacity-0 w-0" : "opacity-100 flex items-center gap-2"
           )}>
-            <span className="font-bold text-xl text-dark-100">Cortex</span>
-            <span className="text-cortex-400 font-medium text-xs px-1.5 py-0.5 rounded bg-cortex-500/10 border border-cortex-500/20">CRM</span>
+            <span className="font-extrabold text-xl tracking-tight bg-gradient-to-r from-white via-dark-100 to-cortex-300 bg-clip-text text-transparent">Cortex</span>
+            <span className="text-cortex-300 font-mono text-[10px] px-1.5 py-0.5 rounded bg-cortex-500/15 border border-cortex-500/30 shadow-[0_0_8px_rgba(99,102,241,0.25)]">AI CRM</span>
           </div>
         </div>
+
         {isMobile && (
           <button
             onClick={onCloseMobile}

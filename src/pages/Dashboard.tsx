@@ -14,49 +14,57 @@ export default function Dashboard() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-        <h1 className="text-xl sm:text-2xl font-bold text-dark-100">Visão Geral</h1>
-        <span className="text-xs sm:text-sm text-dark-400 capitalize">{new Date().toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}</span>
+        <div>
+          <h1 className="text-xl sm:text-2xl font-bold text-dark-100 flex items-center gap-2">
+            Visão Geral
+            <span className="cyber-pill text-[10px] hidden sm:inline-flex">AI Telemetry</span>
+          </h1>
+          <p className="text-xs text-dark-400">Monitoramento comercial e indicadores em tempo real</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-dark-400 capitalize">{new Date().toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}</span>
+        </div>
       </div>
-
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Card className="stat-card p-4">
+        <Card className="stat-card p-4 hover:border-cortex-500/40 hover:shadow-[0_0_20px_rgba(99,102,241,0.2)]">
           <div className="flex items-center gap-3">
-            <div className="rounded-lg bg-cortex-500/20 p-2 text-cortex-500"><Users className="h-5 w-5" /></div>
+            <div className="rounded-lg bg-cortex-500/20 border border-cortex-500/30 p-2.5 text-cortex-400 shadow-[0_0_12px_rgba(99,102,241,0.3)]"><Users className="h-5 w-5" /></div>
             <div>
-              <p className="text-sm text-dark-400">Total de Leads Ativos</p>
-              <p className="text-2xl font-bold text-dark-100">{data.kpis.totalLeads}</p>
+              <p className="text-xs font-mono tracking-wider text-dark-400 uppercase">Total Leads Ativos</p>
+              <p className="text-2xl font-extrabold text-white tracking-tight">{data.kpis.totalLeads}</p>
             </div>
           </div>
         </Card>
-        <Card className="stat-card p-4">
+        <Card className="stat-card p-4 hover:border-emerald-500/40 hover:shadow-[0_0_20px_rgba(16,185,129,0.2)]">
           <div className="flex items-center gap-3">
-            <div className="rounded-lg bg-emerald-500/20 p-2 text-emerald-500"><TrendingUp className="h-5 w-5" /></div>
+            <div className="rounded-lg bg-emerald-500/20 border border-emerald-500/30 p-2.5 text-emerald-400 shadow-[0_0_12px_rgba(16,185,129,0.3)]"><TrendingUp className="h-5 w-5" /></div>
             <div>
-              <p className="text-sm text-dark-400">Taxa de Conversão</p>
-              <p className="text-2xl font-bold text-dark-100">{data.kpis.conversionRate}%</p>
+              <p className="text-xs font-mono tracking-wider text-dark-400 uppercase">Taxa Conversão</p>
+              <p className="text-2xl font-extrabold text-white tracking-tight">{data.kpis.conversionRate}%</p>
             </div>
           </div>
         </Card>
-        <Card className="stat-card p-4">
+        <Card className="stat-card p-4 hover:border-blue-500/40 hover:shadow-[0_0_20px_rgba(59,130,246,0.2)]">
           <div className="flex items-center gap-3">
-            <div className="rounded-lg bg-blue-500/20 p-2 text-blue-500"><Target className="h-5 w-5" /></div>
+            <div className="rounded-lg bg-blue-500/20 border border-blue-500/30 p-2.5 text-blue-400 shadow-[0_0_12px_rgba(59,130,246,0.3)]"><Target className="h-5 w-5" /></div>
             <div>
-              <p className="text-sm text-dark-400">Valor do Pipeline</p>
-              <p className="text-2xl font-bold text-dark-100">{formatCurrency(data.kpis.pipelineValue)}</p>
+              <p className="text-xs font-mono tracking-wider text-dark-400 uppercase">Valor Pipeline</p>
+              <p className="text-2xl font-extrabold text-white tracking-tight">{formatCurrency(data.kpis.pipelineValue)}</p>
             </div>
           </div>
         </Card>
-        <Card className="stat-card p-4">
+        <Card className="stat-card p-4 hover:border-purple-500/40 hover:shadow-[0_0_20px_rgba(168,85,247,0.2)]">
           <div className="flex items-center gap-3">
-            <div className="rounded-lg bg-cortex-400/20 p-2 text-cortex-400"><DollarSign className="h-5 w-5" /></div>
+            <div className="rounded-lg bg-purple-500/20 border border-purple-500/30 p-2.5 text-purple-400 shadow-[0_0_12px_rgba(168,85,247,0.3)]"><DollarSign className="h-5 w-5" /></div>
             <div>
-              <p className="text-sm text-dark-400">Vendas do Mês</p>
-              <p className="text-2xl font-bold text-dark-100">{formatCurrency(data.kpis.monthlySales)}</p>
+              <p className="text-xs font-mono tracking-wider text-dark-400 uppercase">Vendas do Mês</p>
+              <p className="text-2xl font-extrabold text-white tracking-tight">{formatCurrency(data.kpis.monthlySales)}</p>
             </div>
           </div>
         </Card>
       </div>
+
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Card className="flex items-center justify-between border-red-500/30 bg-red-500/10 p-4">

@@ -59,32 +59,45 @@ export const Header: React.FC<HeaderProps> = ({ title, subtitle, onOpenMobileMen
       </div>
 
 
-      <div className="relative" ref={dropdownRef}>
-        <button 
-          onClick={() => setDropdownOpen(!dropdownOpen)}
-          className="flex items-center space-x-3 hover:bg-dark-800 p-1.5 rounded-lg transition-colors"
-        >
-          <div className="text-right hidden sm:block">
-            <div className="text-sm font-medium text-dark-100">
-              {profile?.full_name || 'Usuário'}
+      <div className="flex items-center gap-3">
+        {/* Futuristic System Status Badge */}
+        <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-dark-800/80 border border-cortex-500/25 shadow-[0_0_12px_rgba(99,102,241,0.15)]">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          <span className="text-[11px] font-mono tracking-wider text-cortex-300 font-medium uppercase">
+            Cortex AI Core • Online
+          </span>
+        </div>
+
+        <div className="relative" ref={dropdownRef}>
+          <button 
+            onClick={() => setDropdownOpen(!dropdownOpen)}
+            className="flex items-center space-x-3 hover:bg-dark-800/80 p-1.5 rounded-lg transition-colors"
+          >
+            <div className="text-right hidden sm:block">
+              <div className="text-sm font-medium text-dark-100">
+                {profile?.full_name || 'Usuário'}
+              </div>
+              <div className="text-xs text-dark-400">
+                {profile?.role ? roleLabels[profile.role] || profile.role : 'Usuário'}
+              </div>
             </div>
-            <div className="text-xs text-dark-400">
-              {profile?.role ? roleLabels[profile.role] || profile.role : 'Usuário'}
+            
+            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-cortex-600 to-indigo-500 flex items-center justify-center text-white font-medium border border-cortex-400/40 shadow-[0_0_12px_rgba(99,102,241,0.35)]">
+              {profile?.avatar_url ? (
+                <img 
+                  src={profile.avatar_url} 
+                  alt={profile.full_name || 'Avatar'} 
+                  className="w-full h-full rounded-full object-cover"
+                />
+              ) : (
+                getInitials(profile?.full_name || 'U')
+              )}
             </div>
-          </div>
-          
-          <div className="w-10 h-10 rounded-full bg-cortex-600 flex items-center justify-center text-white font-medium border border-dark-600 shadow-sm">
-            {profile?.avatar_url ? (
-              <img 
-                src={profile.avatar_url} 
-                alt={profile.full_name || 'Avatar'} 
-                className="w-full h-full rounded-full object-cover"
-              />
-            ) : (
-              getInitials(profile?.full_name || 'U')
-            )}
-          </div>
-        </button>
+          </button>
+
 
         {dropdownOpen && (
           <div className="absolute right-0 mt-2 w-48 bg-dark-800 border border-dark-700 rounded-lg shadow-xl py-1 animate-in fade-in slide-in-from-top-2">
@@ -112,7 +125,9 @@ export const Header: React.FC<HeaderProps> = ({ title, subtitle, onOpenMobileMen
             </button>
           </div>
         )}
+        </div>
       </div>
     </header>
   );
 };
+

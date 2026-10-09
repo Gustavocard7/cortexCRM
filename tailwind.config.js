@@ -34,8 +34,25 @@ export default {
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        mono: ['JetBrains Mono', 'Fira Code', 'Courier New', 'monospace'],
+      },
+      animation: {
+        'pulse-slow': 'pulse 3.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'glow': 'glow 2.5s ease-in-out infinite alternate',
+        'shimmer': 'shimmer 2.5s infinite linear',
+      },
+      keyframes: {
+        glow: {
+          '0%': { filter: 'drop-shadow(0 0 5px rgba(99, 102, 241, 0.4))' },
+          '100%': { filter: 'drop-shadow(0 0 16px rgba(99, 102, 241, 0.8))' },
+        },
+        shimmer: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' },
+        },
       },
     },
   },
   plugins: [],
 };
+

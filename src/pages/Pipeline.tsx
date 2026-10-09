@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { DndContext, DragOverlay, closestCorners, KeyboardSensor, PointerSensor, useSensor, useSensors, DragStartEvent, DragEndEvent } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Search, Filter, AlertCircle, Clock, DollarSign } from 'lucide-react';
+import { Search, Filter, AlertCircle, Clock, DollarSign, Plus } from 'lucide-react';
 import { Button, Input, Modal, LoadingSpinner, EmptyState } from '@/components/ui';
 import { formatCurrency, formatRelativeDate, cn, getInitials } from '@/lib/utils';
 import { usePipeline, usePipelineMutations } from '@/hooks/usePipeline';
+import { LeadFormModal } from './Leads';
 import { Lead, PipelineStage } from '@/types';
+
 
 function PipelineCard({ lead, onClick }: { lead: Lead; onClick: (lead: Lead) => void }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: lead.id, data: { type: 'Lead', lead } });
@@ -71,10 +73,12 @@ function PipelineColumn({ stage, leads, onCardClick }: { stage: PipelineStage; l
 }
 
 export default function Pipeline() {
-  const { data, isLoading, error } = usePipeline();
+  const { data, isLoading, error, refetch } = usePipeline();
   const { moveLeadToStage } = usePipelineMutations();
   const [activeLead, setActiveLead] = useState<Lead | null>(null);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+  const [createModalOpen, setCreateModalOpen] = useState(false);
+  const [editingLead, setEditingLead] = useState<Lead | null>(null);
 
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }), useSensor(KeyboardSensor));
 
@@ -112,6 +116,10 @@ export default function Pipeline() {
             <Input className="pl-9 w-full" placeholder="Buscar no pipeline..." />
           </div>
           <Button variant="secondary" className="shrink-0"><Filter className="h-4 w-4 sm:mr-2" /><span className="hidden sm:inline">Filtros</span></Button>
+          <Button variant="primary" onClick={() => { setEditingLead(null); setCreateModalOpen(true); }} className="shrink-0">
+            <Plus className="h-4 w-4 sm:mr-1.5" />
+            <span>Nova Lead</span>
+          </Button>
         </div>
       </div>
       <div className="flex-1 overflow-x-auto pb-4 -mx-4 px-4 sm:mx-0 sm:px-0">
@@ -131,14 +139,32 @@ export default function Pipeline() {
             <div>
               <h3 className="font-semibold text-lg text-dark-100">{selectedLead.name}</h3>
               <p className="text-dark-400">{selectedLead.company}</p>
+              {selectedLead.next_action_description && (
+                <div className="mt-3 p-3 rounded-lg bg-dark-800 border border-dark-700">
+                  <span className="text-xs text-cortex-400 block font-medium">Próxima Ação:</span>
+                  <p className="text-sm text-dark-200 mt-1">{selectedLead.next_action_description}</p>
+                </div>
+              )}
             </div>
             <div className="flex justify-end gap-3 mt-6">
               <Button variant="secondary" onClick={() => setSelectedLead(null)}>Fechar</Button>
-              <Button variant="primary">Editar Lead</Button>
+              <Button variant="primary" onClick={() => { const target = selectedLead; setSelectedLead(null); setEditingLead(target); setCreateModalOpen(true); }}>
+                Editar Lead
+              </Button>
             </div>
           </div>
         )}
       </Modal>
+
+      {createModalOpen && (
+        <LeadFormModal 
+          isOpen={createModalOpen} 
+          onClose={() => setCreateModalOpen(false)} 
+          lead={editingLead} 
+          onSuccess={() => refetch()}
+        />
+      )}
     </div>
   );
 }
+

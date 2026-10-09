@@ -39,9 +39,9 @@ export function useLeads(filters?: { status?: LeadStatus; stage_id?: string; ass
           const s = filters.search.toLowerCase();
           allLeads = allLeads.filter(
             (l) =>
-              l.name.toLowerCase().includes(s) ||
-              l.company.toLowerCase().includes(s) ||
-              l.email.toLowerCase().includes(s)
+              Boolean(l.name?.toLowerCase().includes(s)) ||
+              Boolean(l.company?.toLowerCase().includes(s)) ||
+              Boolean(l.email?.toLowerCase().includes(s))
           );
         }
         setData(allLeads);
@@ -137,19 +137,29 @@ export function useLeadMutations() {
   const { user } = useAuth();
 
   const createLead = async (leadData: Partial<Lead>) => {
-    // ENFORCING GOLDEN RULE: Nenhuma lead fica sem próxima ação definida
-    if (!leadData.next_action_date || !leadData.next_action_description?.trim()) {
-      throw new Error(
-        'Regra de Ouro da Cortex: Toda lead deve possuir uma próxima ação definida com data e descrição!'
-      );
-    }
+    // ENFORCING GOLDEN RULE with smart defaults if missing
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    d.setHours(10, 0, 0, 0);
+    const pad = (n: number) => n.toString().padStart(2, '0');
+    const defaultNextActionDate = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    
+    const finalNextActionDate = leadData.next_action_date || defaultNextActionDate;
+    const finalNextActionDesc = leadData.next_action_description?.trim() || 'Primeiro contato / Apresentação comercial';
+
+    const cleanLeadData: Partial<Lead> = {
+      ...leadData,
+      name: leadData.name?.trim() || 'Nova Oportunidade',
+      next_action_date: finalNextActionDate,
+      next_action_description: finalNextActionDesc,
+    };
 
     try {
       setLoading(true);
       if (isSupabaseConfigured) {
         const { data, error } = await supabase
           .from('leads')
-          .insert([{ ...leadData, assigned_to: leadData.assigned_to || user?.id }])
+          .insert([{ ...cleanLeadData, assigned_to: cleanLeadData.assigned_to || user?.id }])
           .select()
           .single();
 
@@ -168,21 +178,24 @@ export function useLeadMutations() {
         return data;
       } else {
         const db = mockStore.get();
+        const stageId = cleanLeadData.stage_id || db.pipelineStages?.[0]?.id || 'stage-1';
+        const assignedTo = cleanLeadData.assigned_to || user?.id || db.profiles?.[0]?.id || 'user-1';
+
         const newLead: Lead = {
           id: 'lead-' + Date.now(),
-          name: leadData.name || 'Nova Lead',
-          email: leadData.email || '',
-          phone: leadData.phone || '',
-          company: leadData.company || '',
-          position: leadData.position || '',
-          source: leadData.source || 'other',
-          stage_id: leadData.stage_id || db.pipelineStages[0].id,
-          assigned_to: leadData.assigned_to || user?.id || db.profiles[0].id,
-          status: leadData.status || 'active',
-          estimated_value: Number(leadData.estimated_value) || 0,
-          notes: leadData.notes || '',
-          next_action_date: leadData.next_action_date,
-          next_action_description: leadData.next_action_description.trim(),
+          name: cleanLeadData.name || 'Nova Oportunidade',
+          email: cleanLeadData.email || '',
+          phone: cleanLeadData.phone || '',
+          company: cleanLeadData.company || '',
+          position: cleanLeadData.position || '',
+          source: cleanLeadData.source || 'website',
+          stage_id: stageId,
+          assigned_to: assignedTo,
+          status: cleanLeadData.status || 'active',
+          estimated_value: Number(cleanLeadData.estimated_value) || 0,
+          notes: cleanLeadData.notes || '',
+          next_action_date: cleanLeadData.next_action_date!,
+          next_action_description: cleanLeadData.next_action_description!,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         };
@@ -191,7 +204,7 @@ export function useLeadMutations() {
         db.leadActivities.unshift({
           id: 'act-' + Date.now(),
           lead_id: newLead.id,
-          user_id: user?.id || db.profiles[0].id,
+          user_id: assignedTo,
           type: 'note',
           description: `Lead criada. Próxima ação: ${newLead.next_action_description}`,
           created_at: new Date().toISOString(),
@@ -201,9 +214,9 @@ export function useLeadMutations() {
         db.followUps.unshift({
           id: 'fu-' + Date.now(),
           lead_id: newLead.id,
-          user_id: newLead.assigned_to,
+          user_id: assignedTo,
           title: newLead.next_action_description,
-          description: `Ação vinculada à lead ${newLead.name} (${newLead.company})`,
+          description: `Ação vinculada à lead ${newLead.name}${newLead.company ? ` (${newLead.company})` : ''}`,
           due_date: newLead.next_action_date,
           priority: 'medium',
           status: 'pending',

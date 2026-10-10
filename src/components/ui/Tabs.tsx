@@ -26,7 +26,12 @@ export const Tabs: React.FC<TabsProps> = ({ tabs, activeTab, activeId, onChange 
           return (
             <button
               key={tab.id}
-              onClick={() => onChange(tab.id)}
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onChange(tab.id);
+              }}
               className={cn(
                 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-2 transition-colors focus:outline-none',
                 isActive

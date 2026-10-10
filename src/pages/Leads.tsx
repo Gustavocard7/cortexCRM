@@ -161,10 +161,17 @@ export function LeadFormModal({
                 onChange={e => setFormData({...formData, company: e.target.value})} 
               />
               <Input 
-                label="Cargo / Função" 
-                placeholder="Ex: Diretor de Vendas"
-                value={formData.position || ''} 
-                onChange={e => setFormData({...formData, position: e.target.value})} 
+                label="Valor Estimado da Oportunidade (R$)" 
+                type="number" 
+                placeholder="0,00"
+                value={formData.estimated_value || ''} 
+                onChange={e => setFormData({...formData, estimated_value: Number(e.target.value)})} 
+              />
+              <Input 
+                label="Telefone / WhatsApp" 
+                placeholder="(11) 98765-4321"
+                value={formData.phone || ''} 
+                onChange={e => setFormData({...formData, phone: e.target.value})} 
               />
               <Input 
                 label="Email" 
@@ -172,12 +179,6 @@ export function LeadFormModal({
                 placeholder="carlos@empresa.com"
                 value={formData.email || ''} 
                 onChange={e => setFormData({...formData, email: e.target.value})} 
-              />
-              <Input 
-                label="Telefone / WhatsApp" 
-                placeholder="(11) 98765-4321"
-                value={formData.phone || ''} 
-                onChange={e => setFormData({...formData, phone: e.target.value})} 
               />
               <div>
                 <label className="block text-sm font-medium text-dark-200 mb-1">Estágio no Funil</label>
@@ -216,8 +217,14 @@ export function LeadFormModal({
                   value={formData.estimated_value || ''} 
                   onChange={e => setFormData({...formData, estimated_value: Number(e.target.value)})} 
                 />
-                <div>
-                  <label className="block text-sm font-medium text-dark-200 mb-1">Status</label>
+                <Input 
+                  label="Cargo / Função" 
+                  placeholder="Ex: Diretor de Vendas"
+                  value={formData.position || ''} 
+                  onChange={e => setFormData({...formData, position: e.target.value})} 
+                />
+                <div className="col-span-1 sm:col-span-2">
+                  <label className="block text-sm font-medium text-dark-200 mb-1">Status da Oportunidade</label>
                   <select
                     value={formData.status || 'active'}
                     onChange={e => setFormData({...formData, status: e.target.value as any})}
@@ -231,7 +238,7 @@ export function LeadFormModal({
               </div>
               <Textarea 
                 label="Notas e Observações" 
-                placeholder="Detalhes adicionais sobre a oportunidade..."
+                placeholder="Detalhes adicionais sobre a oportunidade..." 
                 rows={4}
                 value={formData.notes || ''} 
                 onChange={e => setFormData({...formData, notes: e.target.value})} 
@@ -273,15 +280,25 @@ export function LeadFormModal({
           )}
         </div>
 
-        <div className="flex items-center justify-between p-4 border-t border-dark-700 bg-dark-900 rounded-b-xl">
-          <div className="text-xs text-dark-400 flex items-center gap-1.5">
-            <Clock className="w-3.5 h-3.5 text-cortex-400" />
+        <div className="flex flex-col sm:flex-row items-center justify-between p-4 border-t border-dark-700 bg-dark-900 rounded-b-xl gap-3">
+          <div className="text-xs text-dark-400 flex items-center gap-1.5 self-start sm:self-center">
+            <Clock className="w-3.5 h-3.5 text-cortex-400 shrink-0" />
             <span>Próxima ação pré-configurada automaticamente</span>
           </div>
-          <div className="flex gap-3">
+          <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
             <Button type="button" variant="secondary" onClick={onClose} disabled={isSubmitting}>
               Cancelar
             </Button>
+            {activeTab === 'basic' && (
+              <Button type="button" variant="secondary" onClick={() => setActiveTab('details')}>
+                Detalhes ➜
+              </Button>
+            )}
+            {activeTab === 'details' && (
+              <Button type="button" variant="secondary" onClick={() => setActiveTab('action')}>
+                Próxima Ação ➜
+              </Button>
+            )}
             <Button type="submit" variant="primary" loading={isSubmitting}>
               {lead ? "Salvar Alterações" : "Criar Lead"}
             </Button>

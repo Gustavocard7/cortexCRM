@@ -60,6 +60,7 @@ export const Modal: React.FC<ModalProps> = ({
         <div className="flex items-center justify-between px-6 py-4 border-b border-dark-700">
           <h2 className="text-lg font-semibold text-dark-100">{title}</h2>
           <button
+            type="button"
             onClick={onClose}
             className="text-dark-400 hover:text-dark-100 transition-colors focus:outline-none"
           >
